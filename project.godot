@@ -22,6 +22,10 @@ window/size/viewport_height=1080
 window/size/mode=3
 window/stretch/mode="canvas_items"
 
+[editor]
+
+movie_writer/movie_file="C:/Users/csaki/Documents/Kraken/TOPDOWNDEMO/Going-Deeper/Rec/Rec1.avi"
+
 [input]
 
 ui_left={
