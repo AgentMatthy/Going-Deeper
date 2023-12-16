@@ -1,12 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://dki4vlmyaunko"]
+[gd_scene load_steps=19 format=3 uid="uid://dki4vlmyaunko"]
 
 [ext_resource type="Script" path="res://Scripts/CharacterBody2D.gd" id="1_nbl84"]
 [ext_resource type="Texture2D" uid="uid://ca3iiq2dl5c6s" path="res://Sprites/player.png" id="2_m7mnc"]
-[ext_resource type="Texture2D" uid="uid://c8o81bpa4eahc" path="res://Sprites/background2.svg" id="3_hm0n1"]
 [ext_resource type="Shader" path="res://Shaders/bg.gdshader" id="3_nf3a4"]
 [ext_resource type="Shader" path="res://Shaders/root.gdshader" id="4_2eg7p"]
+[ext_resource type="Texture2D" uid="uid://dq1syvyo00yqv" path="res://Sprites/background3.svg" id="4_vvsvs"]
+[ext_resource type="Texture2D" uid="uid://68r6jl1wcje7" path="res://Sprites/rect1.svg" id="6_h7u2k"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ix8ry"]
+radius = 55.0091
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iquma"]
 shader = ExtResource("3_nf3a4")
@@ -54,6 +56,12 @@ shader_parameter/scroll_offset2 = Vector2(0.1, 0.1)
 shader_parameter/center = Vector2(0.5, 0.5)
 shader_parameter/amount = 0.3
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_17ht2"]
+bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vi35q"]
+size = Vector2(108, 108)
+
 [node name="ROOT" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
@@ -81,7 +89,7 @@ motion_mirroring = Vector2(1920, 1920)
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 light_mask = 0
 z_index = -1
-texture = ExtResource("3_hm0n1")
+texture = ExtResource("4_vvsvs")
 centered = false
 
 [node name="GUI" type="CanvasLayer" parent="."]
@@ -147,3 +155,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="WORLD" type="Node" parent="."]
+
+[node name="Walls" type="Node" parent="WORLD"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="WORLD/Walls"]
+position = Vector2(20, 568)
+scale = Vector2(1, 13.2)
+physics_material_override = SubResource("PhysicsMaterial_17ht2")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WORLD/Walls/StaticBody2D"]
+shape = SubResource("RectangleShape2D_vi35q")
+
+[node name="Sprite2D" type="Sprite2D" parent="WORLD/Walls/StaticBody2D"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("6_h7u2k")
