@@ -1,18 +1,51 @@
-[gd_scene load_steps=4 format=3 uid="uid://dki4vlmyaunko"]
+[gd_scene load_steps=7 format=3 uid="uid://dki4vlmyaunko"]
 
 [ext_resource type="Script" path="res://Scripts/CharacterBody2D.gd" id="1_nbl84"]
-[ext_resource type="Texture2D" uid="uid://coe28707nf1nn" path="res://icon.svg" id="2_yt2e2"]
+[ext_resource type="Texture2D" uid="uid://ca3iiq2dl5c6s" path="res://Sprites/player.png" id="2_m7mnc"]
+[ext_resource type="Texture2D" uid="uid://c8o81bpa4eahc" path="res://Sprites/background2.svg" id="3_hm0n1"]
+[ext_resource type="Shader" path="res://Shaders/root.gdshader" id="4_2eg7p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ix8ry"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3jt4n"]
+shader = ExtResource("4_2eg7p")
+shader_parameter/size = Vector2(6, 5.25)
 
 [node name="ROOT" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
+position = Vector2(950, 540)
+motion_mode = 1
 script = ExtResource("1_nbl84")
 
 [node name="PlayerCollider" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_ix8ry")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
-texture = ExtResource("2_yt2e2")
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_m7mnc")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1920, 1920)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+light_mask = 0
+z_index = -1
+texture = ExtResource("3_hm0n1")
+centered = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_3jt4n")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
