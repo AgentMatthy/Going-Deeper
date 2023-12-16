@@ -1,21 +1,64 @@
-[gd_scene load_steps=7 format=3 uid="uid://dki4vlmyaunko"]
+[gd_scene load_steps=16 format=3 uid="uid://dki4vlmyaunko"]
 
 [ext_resource type="Script" path="res://Scripts/CharacterBody2D.gd" id="1_nbl84"]
 [ext_resource type="Texture2D" uid="uid://ca3iiq2dl5c6s" path="res://Sprites/player.png" id="2_m7mnc"]
 [ext_resource type="Texture2D" uid="uid://c8o81bpa4eahc" path="res://Sprites/background2.svg" id="3_hm0n1"]
+[ext_resource type="Shader" path="res://Shaders/bg.gdshader" id="3_nf3a4"]
 [ext_resource type="Shader" path="res://Shaders/root.gdshader" id="4_2eg7p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ix8ry"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3jt4n"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iquma"]
+shader = ExtResource("3_nf3a4")
+shader_parameter/scroll_offset = Vector2(0.1, 0.1)
+shader_parameter/scroll_offset2 = Vector2(0.1, 0.1)
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/amount = 0.3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5it04"]
+bg_color = Color(1, 0, 0, 1)
+corner_radius_top_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3unnv"]
+bg_color = Color(0.392157, 0.647059, 1, 1)
+corner_radius_top_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="Theme" id="Theme_mmucd"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_5it04")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_3unnv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qqu3p"]
+bg_color = Color(0.392157, 0.647059, 1, 1)
+corner_radius_top_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ydbb7"]
+bg_color = Color(1, 0, 0, 1)
+corner_radius_top_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="Theme" id="Theme_ntc80"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_qqu3p")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_ydbb7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iiv6y"]
 shader = ExtResource("4_2eg7p")
-shader_parameter/size = Vector2(6, 5.25)
+shader_parameter/size = Vector2(4, 3.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_okvwo"]
+shader = ExtResource("3_nf3a4")
+shader_parameter/scroll_offset = Vector2(0.1, 0.1)
+shader_parameter/scroll_offset2 = Vector2(0.1, 0.1)
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/amount = 0.3
 
 [node name="ROOT" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(950, 540)
+position = Vector2(960, 540)
 motion_mode = 1
 script = ExtResource("1_nbl84")
 
@@ -32,6 +75,7 @@ position_smoothing_enabled = true
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+material = SubResource("ShaderMaterial_iquma")
 motion_mirroring = Vector2(1920, 1920)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
@@ -40,10 +84,64 @@ z_index = -1
 texture = ExtResource("3_hm0n1")
 centered = false
 
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DashBar" type="ProgressBar" parent="GUI/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 47.0
+offset_top = -90.0
+offset_right = 973.0
+offset_bottom = -47.0
+grow_vertical = 0
+theme = SubResource("Theme_mmucd")
+max_value = 3.0
+step = 1.0
+value = 3.0
+rounded = true
+show_percentage = false
+
+[node name="DashRechargeBar" type="ProgressBar" parent="GUI/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = -148.0
+offset_right = 485.0
+offset_bottom = -105.0
+grow_vertical = 0
+theme = SubResource("Theme_ntc80")
+max_value = 70.0
+step = 10.0
+fill_mode = 1
+show_percentage = false
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-material = SubResource("ShaderMaterial_3jt4n")
+material = SubResource("ShaderMaterial_iiv6y")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
+visible = false
+material = SubResource("ShaderMaterial_okvwo")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

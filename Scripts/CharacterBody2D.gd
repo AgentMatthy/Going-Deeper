@@ -1,12 +1,15 @@
 extends CharacterBody2D
 
+@onready var dashbar = %DashBar
+@onready var dashrechargebar = %DashRechargeBar
+
 var speed = 200
 var lookspeed = 10
 var drag = 0.8
 var direction = Vector2(0, 0)
 
-var dash_cooldown = 0
-var D_dash_coldown = 40
+var dash_cooldown = 70
+var D_dash_coldown = 70
 var dash_amount = 3
 
 func _process(delta):
@@ -15,6 +18,8 @@ func _process(delta):
 	var new_transform = self.transform.looking_at(target)
 	self.transform = self.transform.interpolate_with(new_transform, lookspeed * delta)
 	
+	dashbar.value = dash_amount
+	dashrechargebar.value = dash_cooldown
 
 func _physics_process(delta):
 	direction = Vector2(0, 0)
@@ -46,4 +51,6 @@ func dash():
 	if dash_amount > 0:
 		velocity = velocity * 4
 		dash_amount -= 1
+	elif dash_amount == 0:
+		velocity = velocity * 0
 
