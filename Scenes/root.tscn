@@ -172,3 +172,5 @@ shape = SubResource("RectangleShape2D_vi35q")
 [node name="Sprite2D" type="Sprite2D" parent="WORLD/Walls/StaticBody2D"]
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("6_h7u2k")
+
+[node name="ENEMY" type="Node" parent="."]
