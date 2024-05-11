@@ -20,6 +20,10 @@ func _process(delta):
 	
 	dashbar.value = dash_amount
 	dashrechargebar.value = dash_cooldown
+	
+	if Input.is_action_just_pressed("space"):
+		if velocity.x > 1 or velocity.x < -1 or velocity.y > 1 or velocity.y < -1:
+			dash()
 
 func _physics_process(delta):
 	direction = Vector2(0, 0)
@@ -37,8 +41,6 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_up"):
 		direction.y = -1
 		velocity.y -= 1 * speed
-	if Input.is_action_just_pressed("space"):
-		dash()
 		
 	if dash_amount < 3:
 		if dash_cooldown > 0:
