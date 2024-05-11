@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var dashbar = %DashBar
 @onready var dashrechargebar = %DashRechargeBar
+@onready var dashblockbar = %DashBlock
 
 var speed = 200
 var lookspeed = 10
@@ -11,6 +12,7 @@ var direction = Vector2(0, 0)
 var dash_cooldown = 70
 var D_dash_coldown = 70
 var dash_amount = 3
+var dash_block = 0
 
 func _process(delta):
 	move_and_slide()
@@ -20,10 +22,10 @@ func _process(delta):
 	
 	dashbar.value = dash_amount
 	dashrechargebar.value = dash_cooldown
+	dashblockbar.value = dash_block
 	
-	if Input.is_action_just_pressed("space"):
-		if velocity.x > 1 or velocity.x < -1 or velocity.y > 1 or velocity.y < -1:
-			dash()
+	if Input.is_action_just_pressed("space") and dash_block == 0:
+		dash()
 
 func _physics_process(delta):
 	direction = Vector2(0, 0)
@@ -42,6 +44,8 @@ func _physics_process(delta):
 		direction.y = -1
 		velocity.y -= 1 * speed
 		
+	if dash_block > 0:
+		dash_block -= 1
 	if dash_amount < 3:
 		if dash_cooldown > 0:
 			dash_cooldown -= 1
@@ -50,9 +54,11 @@ func _physics_process(delta):
 			dash_amount += 1
 		
 func dash():
-	if dash_amount > 0:
-		velocity = velocity * 4
-		dash_amount -= 1
-	elif dash_amount == 0:
-		velocity = velocity * 0
+	if velocity.x > 150 or velocity.x < -150 or velocity.y > 150 or velocity.y < -150:
+		if dash_amount > 0:
+			velocity = velocity * 5
+			dash_amount -= 1
+			dash_block = 15
+		elif dash_amount == 0:
+			velocity = velocity * 0
 

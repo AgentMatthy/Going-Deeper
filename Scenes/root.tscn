@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dki4vlmyaunko"]
+[gd_scene load_steps=22 format=3 uid="uid://dki4vlmyaunko"]
 
 [ext_resource type="Script" path="res://Scripts/CharacterBody2D.gd" id="1_nbl84"]
 [ext_resource type="Texture2D" uid="uid://ca3iiq2dl5c6s" path="res://Sprites/player.png" id="2_m7mnc"]
@@ -44,6 +44,18 @@ corner_radius_bottom_left = 1024
 [sub_resource type="Theme" id="Theme_ntc80"]
 ProgressBar/styles/background = SubResource("StyleBoxFlat_qqu3p")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_ydbb7")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fdp0p"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1swur"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_right = 220
+corner_radius_bottom_left = 220
+
+[sub_resource type="Theme" id="Theme_45fr5"]
+/styles/bg = SubResource("StyleBoxFlat_fdp0p")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_1swur")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iiv6y"]
 shader = ExtResource("4_2eg7p")
@@ -134,6 +146,22 @@ theme = SubResource("Theme_ntc80")
 max_value = 70.0
 step = 10.0
 fill_mode = 1
+show_percentage = false
+
+[node name="DashBlock" type="ProgressBar" parent="GUI/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 505.0
+offset_top = -131.0
+offset_right = 940.0
+offset_bottom = -105.0
+grow_vertical = 0
+theme = SubResource("Theme_45fr5")
+max_value = 15.0
+step = 1.0
 show_percentage = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
