@@ -66,7 +66,6 @@ size = Vector2(108, 108)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(960, 540)
 motion_mode = 1
 script = ExtResource("1_nbl84")
 
@@ -161,8 +160,8 @@ grow_vertical = 2
 [node name="Walls" type="Node" parent="WORLD"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="WORLD/Walls"]
-position = Vector2(20, 568)
-scale = Vector2(1, 13.2)
+position = Vector2(-3000, 0)
+scale = Vector2(20, 60)
 physics_material_override = SubResource("PhysicsMaterial_17ht2")
 metadata/_edit_group_ = true
 
@@ -170,6 +169,45 @@ metadata/_edit_group_ = true
 shape = SubResource("RectangleShape2D_vi35q")
 
 [node name="Sprite2D" type="Sprite2D" parent="WORLD/Walls/StaticBody2D"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("6_h7u2k")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="WORLD/Walls"]
+position = Vector2(3000, 5)
+scale = Vector2(20, 60)
+physics_material_override = SubResource("PhysicsMaterial_17ht2")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WORLD/Walls/StaticBody2D2"]
+shape = SubResource("RectangleShape2D_vi35q")
+
+[node name="Sprite2D" type="Sprite2D" parent="WORLD/Walls/StaticBody2D2"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("6_h7u2k")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="WORLD/Walls"]
+position = Vector2(0, 3000)
+scale = Vector2(60, 20)
+physics_material_override = SubResource("PhysicsMaterial_17ht2")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WORLD/Walls/StaticBody2D3"]
+shape = SubResource("RectangleShape2D_vi35q")
+
+[node name="Sprite2D" type="Sprite2D" parent="WORLD/Walls/StaticBody2D3"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("6_h7u2k")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="WORLD/Walls"]
+position = Vector2(0, -3000)
+scale = Vector2(60, 20)
+physics_material_override = SubResource("PhysicsMaterial_17ht2")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WORLD/Walls/StaticBody2D4"]
+shape = SubResource("RectangleShape2D_vi35q")
+
+[node name="Sprite2D" type="Sprite2D" parent="WORLD/Walls/StaticBody2D4"]
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("6_h7u2k")
 
