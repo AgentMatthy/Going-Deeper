@@ -3,8 +3,8 @@ extends CharacterBody2D
 @onready var dashbar = %DashBar
 @onready var dashrechargebar = %DashRechargeBar
 
-var speed = 200
-var lookspeed = 10
+var speed = 150
+var lookspeed = 20
 var drag = 0.8
 var direction = Vector2(0, 0)
 
@@ -53,4 +53,3 @@ func dash():
 		dash_amount -= 1
 	elif dash_amount == 0:
 		velocity = velocity * 0
-

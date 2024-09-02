@@ -1,14 +1,31 @@
-[gd_scene load_steps=19 format=3 uid="uid://dki4vlmyaunko"]
+[gd_scene load_steps=27 format=3 uid="uid://dki4vlmyaunko"]
 
 [ext_resource type="Script" path="res://Scripts/CharacterBody2D.gd" id="1_nbl84"]
 [ext_resource type="Texture2D" uid="uid://ca3iiq2dl5c6s" path="res://Sprites/player.png" id="2_m7mnc"]
+[ext_resource type="Script" path="res://Scenes/combat.gd" id="3_hyuim"]
 [ext_resource type="Shader" path="res://Shaders/bg.gdshader" id="3_nf3a4"]
 [ext_resource type="Shader" path="res://Shaders/root.gdshader" id="4_2eg7p"]
 [ext_resource type="Texture2D" uid="uid://dq1syvyo00yqv" path="res://Sprites/background3.svg" id="4_vvsvs"]
 [ext_resource type="Texture2D" uid="uid://68r6jl1wcje7" path="res://Sprites/rect1.svg" id="6_h7u2k"]
+[ext_resource type="PackedScene" uid="uid://cs0wceqlmwfiw" path="res://Scenes/object.tscn" id="8_ebpwx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ix8ry"]
 radius = 55.0091
+
+[sub_resource type="Gradient" id="Gradient_pjgfd"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_x7ard"]
+gradient = SubResource("Gradient_pjgfd")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_iocy0"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wfp50"]
+gradient = SubResource("Gradient_iocy0")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iquma"]
 shader = ExtResource("3_nf3a4")
@@ -16,6 +33,10 @@ shader_parameter/scroll_offset = Vector2(0.1, 0.1)
 shader_parameter/scroll_offset2 = Vector2(0.1, 0.1)
 shader_parameter/center = Vector2(0.5, 0.5)
 shader_parameter/amount = 0.3
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_733pu"]
+resource_local_to_scene = true
+light_mode = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5it04"]
 bg_color = Color(1, 0, 0, 1)
@@ -62,6 +83,10 @@ bounce = 1.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vi35q"]
 size = Vector2(108, 108)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_w6egj"]
+blend_mode = 1
+light_mode = 2
+
 [node name="ROOT" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
@@ -70,24 +95,64 @@ motion_mode = 1
 script = ExtResource("1_nbl84")
 
 [node name="PlayerCollider" type="CollisionShape2D" parent="Player"]
+light_mask = 0
 shape = SubResource("CircleShape2D_ix8ry")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
+light_mask = 0
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_m7mnc")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position_smoothing_enabled = true
 
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+visible = false
+visibility_layer = 2
+energy = 0.3
+range_layer_min = -100
+range_layer_max = 100
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_x7ard")
+texture_scale = 20.0
+
+[node name="PointLight2D2" type="PointLight2D" parent="Player"]
+visibility_layer = 2
+energy = 0.0
+range_layer_min = -100
+range_layer_max = 100
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_wfp50")
+texture_scale = 50.0
+
+[node name="SCRIPTS" type="Node" parent="Player"]
+
+[node name="COMBAT" type="Node" parent="Player/SCRIPTS"]
+script = ExtResource("3_hyuim")
+
+[node name="TIMERS" type="Node" parent="Player"]
+
+[node name="ATTACKCOOLDOWN" type="Timer" parent="Player/TIMERS"]
+one_shot = true
+
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = -1
 material = SubResource("ShaderMaterial_iquma")
 motion_mirroring = Vector2(1920, 1920)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-light_mask = 0
 z_index = -1
+z_as_relative = false
+material = SubResource("CanvasItemMaterial_733pu")
+texture = ExtResource("4_vvsvs")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+self_modulate = Color(0, 0, 0, 1)
+z_index = -2
+z_as_relative = false
 texture = ExtResource("4_vvsvs")
 centered = false
 
@@ -136,6 +201,22 @@ step = 10.0
 fill_mode = 1
 show_percentage = false
 
+[node name="AttackCooldownBar" type="ProgressBar" parent="GUI/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 999.0
+offset_top = -77.0
+offset_right = 1338.77
+offset_bottom = -47.0
+grow_vertical = 0
+theme = SubResource("Theme_mmucd")
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
@@ -160,7 +241,7 @@ grow_vertical = 2
 [node name="Walls" type="Node" parent="WORLD"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="WORLD/Walls"]
-position = Vector2(-3000, 0)
+position = Vector2(-1694, 0)
 scale = Vector2(20, 60)
 physics_material_override = SubResource("PhysicsMaterial_17ht2")
 metadata/_edit_group_ = true
@@ -173,7 +254,7 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("6_h7u2k")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="WORLD/Walls"]
-position = Vector2(3000, 5)
+position = Vector2(1701, 5)
 scale = Vector2(20, 60)
 physics_material_override = SubResource("PhysicsMaterial_17ht2")
 metadata/_edit_group_ = true
@@ -186,7 +267,7 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("6_h7u2k")
 
 [node name="StaticBody2D3" type="StaticBody2D" parent="WORLD/Walls"]
-position = Vector2(0, 3000)
+position = Vector2(0, 2111)
 scale = Vector2(60, 20)
 physics_material_override = SubResource("PhysicsMaterial_17ht2")
 metadata/_edit_group_ = true
@@ -199,7 +280,7 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("6_h7u2k")
 
 [node name="StaticBody2D4" type="StaticBody2D" parent="WORLD/Walls"]
-position = Vector2(0, -3000)
+position = Vector2(0, -2086)
 scale = Vector2(60, 20)
 physics_material_override = SubResource("PhysicsMaterial_17ht2")
 metadata/_edit_group_ = true
@@ -210,5 +291,28 @@ shape = SubResource("RectangleShape2D_vi35q")
 [node name="Sprite2D" type="Sprite2D" parent="WORLD/Walls/StaticBody2D4"]
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("6_h7u2k")
+
+[node name="Object" parent="WORLD" instance=ExtResource("8_ebpwx")]
+position = Vector2(0, -227)
+scale = Vector2(1, 0.36)
+
+[node name="Object2" parent="WORLD" instance=ExtResource("8_ebpwx")]
+position = Vector2(0, 164)
+scale = Vector2(1, 0.1296)
+
+[node name="Mask" type="ColorRect" parent="WORLD"]
+visible = false
+material = SubResource("CanvasItemMaterial_w6egj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3530.0
+offset_top = -3711.0
+offset_right = -3530.0
+offset_bottom = -3711.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.56, 6.72)
+color = Color(0, 0, 0, 1)
 
 [node name="ENEMY" type="Node" parent="."]
